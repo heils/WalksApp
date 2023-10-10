@@ -53,6 +53,23 @@ namespace APPAPI.Controllers
             var skipResults = (pageNumber - 1) * pageSize;
             return Ok(mapper.Map<List<WalkDto>>(walks.Skip(skipResults).Take(pageSize)));
         }
+        [HttpGet]
+        [Route("GetOptionsList")]
+        public async Task<IActionResult> GetOptionsList()
+        {   
+            var regions = await dbContext.Regions.ToListAsync();
+            var regionsDto = mapper.Map<List<RegionDto>>(regions);
+
+            var diffituclites = await dbContext.Difficulties.ToListAsync();
+            var difficultiesDto = mapper.Map<List<DifficultyDto>>(diffituclites);
+
+            var optionsListDto = new OptionsListDto
+            {
+                Regions = regionsDto,
+                Difficulties = difficultiesDto
+            };
+            return Ok(optionsListDto);
+        }
         [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {

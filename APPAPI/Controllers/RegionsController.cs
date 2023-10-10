@@ -27,21 +27,10 @@ namespace APPAPI.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Writer,Reader")]
+        [Authorize(Roles = "Writer,Reader")]
         public async Task<IActionResult> GetAll()
         {   
             var regions = await dbContext.Regions.ToListAsync();
-            /*var regionsDto = new List<RegionDto>();
-            foreach (var region in regions)
-            { 
-                regionsDto.Add(new RegionDto()
-                {
-                    Id = region.Id,
-                    Code = region.Code,
-                    Name = region.Name,
-                    RegionImageUrl = region.RegionImageUrl
-                });
-            }*/
             var regionsDto = mapper.Map<List<RegionDto>>(regions);
             logger.LogInformation($"Regions: {JsonSerializer.Serialize(regions)}");
             return Ok(regionsDto);
@@ -49,25 +38,17 @@ namespace APPAPI.Controllers
 
         [HttpGet]
         [Route("{id:Guid}")]
-        //[Authorize(Roles = "Writer,Reader")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var region = await dbContext.Regions.FirstOrDefaultAsync(r => r.Id == id);
             if(region == null) return NotFound(); 
-
-            /*var regionDto = new RegionDto()
-            {
-                Id = region.Id,
-                Code = region.Code,
-                Name = region.Name,
-                RegionImageUrl = region.RegionImageUrl
-            };*/
             var regionDto = mapper.Map<RegionDto>(region);
             return Ok(regionDto);
         }
         [HttpPost]
-        [ValidateModel]
-        //[Authorize(Roles = "Writer")]
+        //[ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromBody] CreateRegionDto addRegionDto)
         {
             var region = mapper.Map<Region>(addRegionDto);
@@ -78,7 +59,7 @@ namespace APPAPI.Controllers
         }
         [HttpPut("{id:Guid}")]
         [ValidateModel]
-        //[Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionDto updateRegionDto)
         {  
             var region = await dbContext.Regions.FirstOrDefaultAsync(r => r.Id == id);
@@ -91,7 +72,7 @@ namespace APPAPI.Controllers
             return Ok(regionDto);
         }
         [HttpDelete("{id:Guid}")]
-       //[Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var region = await dbContext.Regions.FirstOrDefaultAsync(r => r.Id == id);

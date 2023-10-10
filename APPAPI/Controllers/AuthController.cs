@@ -45,7 +45,8 @@ namespace APPAPI.Controllers
                 }
 
             }
-            return BadRequest("Something went wrong when trying to create the user");
+            var errors = identityResult.Errors.Select(e => e.Description);
+            return BadRequest(new { errors });
         }
         [HttpPost]
         [Route("Login")]
@@ -73,7 +74,6 @@ namespace APPAPI.Controllers
                         claims,
                         expires: DateTime.Now.AddHours(5),
                         signingCredentials: credentials);
-
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var stringToken = tokenHandler.WriteToken(token);
                     var response = new LoginResponseDto

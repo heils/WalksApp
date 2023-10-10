@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Client.Models.Dto.WalkDto>
+@{
+}
+
+<h1 class="mt-3">Walks</h1>
+<nav class="navbar bg-body-tertiary">
+    <div class="p-0 container-fluid">
+        <form class="d-flex" role="search" method="get" asp-controller="Walks" asp-action="Index">
+            <input class="form-control me-2" type="search" name="searchQuery" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="mb-2 d-flex justify-content-end">
+    <a class="btn btn-secondary" asp-controller="Walks" asp-action="Add">Add Walk</a>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Region</th>
+            <th>Difficulty</th>
+            <th>Length(Km)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var walk in Model)
+        {
+            <tr>
+                <td>@walk.Name</td>
+                <td>@walk.Description</td>
+                <td>@walk.Region.Name</td>
+                <td>@walk.Difficulty.Name</td>
+                <td>@walk.Length</td>
+                <td>
+                    <a class="btn btn-light" asp-controller="Walks" asp-action="Edit" asp-route-id="@walk.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

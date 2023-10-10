@@ -1,13 +1,18 @@
 ﻿@model Client.Models.Dto.RegionDto
 @{
 }
-<h1 class="mt-3">Edit Region</h1>
-@if( Model is not null)
+@if (Model is null)
 {
+    <p class="alert alert-warning">You need to be and admin to edit a Region.</p>
+}
+else
+{
+    <h1 class="mt-3">Edit Region</h1>
+
     <form method="post">
         <div class="mt-3">
             <label class="form-label">Id</label>
-            <input type="text" class="form-control" asp-for="Id" readonly/>
+            <input type="text" class="form-control" asp-for="Id" readonly />
 
             <label class="form-label">Code</label>
             <input type="text" class="form-control" asp-for="Code" />
@@ -24,6 +29,7 @@
             <button type="submit" class="btn btn-danger" asp-controller="Regions" asp-action="Delete">Delete</button>
         </div>
 
-        
+
     </form>
+
 }
